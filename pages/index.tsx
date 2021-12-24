@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import { GetStaticProps, GetStaticPaths, GetServerSideProps } from 'next';
+import { useEffect } from 'react';
 
 // export const getStaticProps: GetStaticProps = async (context) => {
 //   // ...
@@ -14,6 +15,9 @@ import { GetStaticProps, GetStaticPaths, GetServerSideProps } from 'next';
 //   // ...
 // }
 export default function Home() {
+  useEffect(()=>{
+    Three.
+  },[])
   return (
     <div className={styles.container}>
       <Head>
