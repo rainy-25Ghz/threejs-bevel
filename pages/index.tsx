@@ -57,7 +57,7 @@ export default function Home() {
         scene.add(mesh);
         scene.add(camera);
 
-        renderer = new WebGLRenderer({ canvas });
+        renderer = new WebGLRenderer({ canvas, antialias: true });
         renderer.setSize(canvas.width, canvas.height);
         animate();
     }, []);
