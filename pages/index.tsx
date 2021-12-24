@@ -1,7 +1,15 @@
-import Head from 'next/head';
-import styles from '../styles/Home.module.css';
-import { GetStaticProps, GetStaticPaths, GetServerSideProps } from 'next';
-import { useEffect } from 'react';
+import Head from "next/head";
+import styles from "../styles/Home.module.css";
+import { GetStaticProps, GetStaticPaths, GetServerSideProps } from "next";
+import THREE, {
+    Scene,
+    BoxGeometry,
+    MeshBasicMaterial,
+    Mesh,
+    PerspectiveCamera,
+    WebGLRenderer,
+} from "three";
+import { useEffect } from "react";
 
 // export const getStaticProps: GetStaticProps = async (context) => {
 //   // ...
@@ -14,66 +22,52 @@ import { useEffect } from 'react';
 // export const getServerSideProps: GetServerSideProps = async (context) => {
 //   // ...
 // }
+
+let scene: THREE.Scene,
+    geometry: THREE.BoxGeometry,
+    material: THREE.MeshBasicMaterial,
+    mesh: THREE.Mesh,
+    camera: THREE.PerspectiveCamera,
+    renderer: THREE.WebGLRenderer,
+    canvas: HTMLCanvasElement;
+function animate() {
+    requestAnimationFrame(animate);
+    mesh.rotation.x += 0.01;
+    mesh.rotation.y += 0.01;
+    renderer.render(scene, camera);
+}
 export default function Home() {
-  useEffect(()=>{
-    Three.
-  },[])
-  return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-      </Head>
+    useEffect(() => {
+        canvas = document.getElementById("canvas") as HTMLCanvasElement;
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+        scene = new Scene();
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
+        geometry = new BoxGeometry(1, 1, 1);
+        material = new MeshBasicMaterial({ color: "#fab0b0" });
+        mesh = new Mesh(geometry, material);
 
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+        camera = new PerspectiveCamera(
+            75,
+            canvas.width / canvas.height,
+            0.1,
+            1000
+        );
+        camera.position.setZ(5);
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
+        scene.add(mesh);
+        scene.add(camera);
 
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
+        renderer = new WebGLRenderer({ canvas });
+        renderer.setSize(canvas.width, canvas.height);
+        animate();
+    }, []);
 
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-        </a>
-      </footer>
-    </div>
-  );
+    return (
+        <canvas
+            id="canvas"
+            width="600"
+            height="600"
+            style={{ width: "600", height: "600" }}
+        ></canvas>
+    );
 }
